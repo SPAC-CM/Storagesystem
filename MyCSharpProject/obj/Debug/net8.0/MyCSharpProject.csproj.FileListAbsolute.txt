@@ -1,0 +1,15 @@
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\bin\Debug\net8.0\MyCSharpProject.exe
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\bin\Debug\net8.0\MyCSharpProject.deps.json
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\bin\Debug\net8.0\MyCSharpProject.runtimeconfig.json
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\bin\Debug\net8.0\MyCSharpProject.dll
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\bin\Debug\net8.0\MyCSharpProject.pdb
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\MyCSharpProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\MyCSharpProject.AssemblyInfoInputs.cache
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\MyCSharpProject.AssemblyInfo.cs
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\MyCSharpProject.csproj.CoreCompileInputs.cache
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\MyCSharpProject.sourcelink.json
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\MyCSharpProject.dll
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\refint\MyCSharpProject.dll
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\MyCSharpProject.pdb
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\MyCSharpProject.genruntimeconfig.cache
+C:\Users\A-SPAC08\Arbejde\Storagesystem\MyCSharpProject\obj\Debug\net8.0\ref\MyCSharpProject.dll
