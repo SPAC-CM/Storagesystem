@@ -3,6 +3,17 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+.Python
+[Bb]in
+[Ii]nclude
+[Ll]ib
+[Ll]ib64
+[Ll]ocal
+[Ss]cripts
+pyvenv.cfg
+.venv
+pip-selfcheck.json
+
 # dotenv files
 .env
 
