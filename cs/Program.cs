@@ -1,4 +1,19 @@
-﻿SQLManager manager = SQLManager.Instance;
+﻿using System;
+using System.Threading.Tasks;
+using cs.src;
 
-manager.set_connection(args[0],args[1],args[2]);
-manager.insert();
+class Program
+{
+    static async Task Main(string[] args)
+    {
+        try
+        {
+            Client client = new Client();
+            await client.Connect();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
