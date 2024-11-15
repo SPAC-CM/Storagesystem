@@ -16,6 +16,7 @@ class SQL_Manager(object):
         self.session = Session()
 
     def add_table(self, table_name : str):
+        print("horse")
 
 
     def add_item(self, item : DeclarativeMeta):
@@ -26,4 +27,4 @@ class SQL_Manager(object):
 if __name__ == '__main__':
     catagory = Catagory(name="Stuff")
     manager = SQL_Manager()
-    manager.create(catagory)
+    manager.add_item(catagory)
