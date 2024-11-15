@@ -1,12 +1,11 @@
 import json
 from flask import Flask, jsonify, request
+from SQL_Manager import *
 app = Flask(__name__)
 
+SQL_database = SQL_Manager()
+product_table_name = "Products"
 
-products = [
-    {'id' : 1, 'name' : 'Niki shoe'},
-    {'id' : 2, 'name' : 'Blue jeans'}
-]
 
 def product_is_valid(product):
     for key in product.keys():
@@ -18,8 +17,12 @@ def get_Product(id : int):
     return next((p for p in products if e['id'] == id), None)
 
 @app.route('/products', methods=['GET'])
-def get_Products():
-    return jsonify(products)
+def get_products():
+    try:
+        print(SQL_database.get_table(product_table_name))
+        return jsonify(SQL_database.get_table(product_table_name))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/products', methods=['POST'])
 def create_product():
@@ -31,7 +34,7 @@ def create_product():
     product['id'] = curretID
     products.append(product)
 
-    return '', 201, { 'location' : f'/products/{curretID}'}
+    return '', 201, { 'location' : f'/products/'}
 
 @app.route('/products/<int:ud>', methods=['PUT'])    
 def update_product(id : int):
@@ -60,3 +63,6 @@ def delete_product(id):
 
 if __name__ == '__main__':
    app.run(port=5000)
+
+
+   
