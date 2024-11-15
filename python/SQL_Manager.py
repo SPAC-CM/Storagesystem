@@ -1,7 +1,9 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
 import os
 from sqlalchemy.orm.decl_api import DeclarativeMeta
+from classes.Tables import *
+from classes.Factory import *
 class SQL_Manager(object):
 
     _instance = None
@@ -12,7 +14,11 @@ class SQL_Manager(object):
     
     def __init__(self):
         engine_uri = f"mysql+pymysql://{os.getenv('mysqluser')}:{os.getenv('mysqlpass')}@{os.getenv('mysqlhost')}/Products"
+        engine = create_engine(engine_uri)
+        metadata = create_tables(MetaData())
+        metadata.create_all(engine)
         Session = sessionmaker(bind = create_engine(engine_uri))
+        
         self.session = Session()
 
     def add_table(self, table_name : str):
@@ -24,6 +30,4 @@ class SQL_Manager(object):
 
 
 if __name__ == '__main__':
-    catagory = Category(name="Stuff")
     manager = SQL_Manager()
-    manager.add_item(catagory)
