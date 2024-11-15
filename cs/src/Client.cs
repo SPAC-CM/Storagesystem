@@ -23,6 +23,13 @@ namespace cs.src
 
                     if (response.IsSuccessStatusCode)
                     {
+                        //Create obj
+                        var jsonContent = JsonSerializer.Serialize(new 
+                        {                
+                            id = 3,                
+                            name = "New Product"
+                        });
+
                         // Parse the JSON response
                         string jsonResponse = await response.Content.ReadAsStringAsync();
                         JsonDocument jsonDoc = JsonDocument.Parse(jsonResponse);

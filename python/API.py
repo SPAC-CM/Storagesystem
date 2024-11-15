@@ -2,6 +2,7 @@ import json
 from flask import Flask, jsonify, request
 app = Flask(__name__)
 
+
 products = [
     {'id' : 1, 'name' : 'Niki shoe'},
     {'id' : 2, 'name' : 'Blue jeans'}
