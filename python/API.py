@@ -23,16 +23,15 @@ def get_Products():
 
 @app.route('/products', methods=['POST'])
 def create_product():
-    global nextProductId
     product = json.loads(request.data)
     if not product_is_valid(product):
         return jsonify({'error' : ' Invalid product propertoes'}), 400
 
-    product['id'] = nextProductId
-    nextProductId += 1
+    curretID = len(products) + 1 #Placeholder for making id
+    product['id'] = curretID
     products.append(product)
 
-    return '', 201, { 'location' : '/products/{}'.format(product[id])}
+    return '', 201, { 'location' : f'/products/{curretID}'}
 
 @app.route('/products/<int:ud>', methods=['PUT'])    
 def update_product(id : int):

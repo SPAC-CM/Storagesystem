@@ -9,27 +9,65 @@ namespace cs.src
 {
     public class Client
     {
+        string targetPort = "http://localhost:5000";
+        string URL = "/products";
+
         public async Task Connect()
         {
             using (var client = new HttpClient())
             {
                 // Set the base address for the API
-                client.BaseAddress = new Uri("http://localhost:5000");
+                client.BaseAddress = new Uri(targetPort);
 
                 try
                 {
-                    // Make a GET request to the API endpoint
-                    HttpResponseMessage response = await client.GetAsync("/products");
+                    //CREATE request
+                    // Create a new product
+                    var newProduct = new
+                    {
+                        name = "Top hat"
+                    };
+
+                    // Convert the object to JSON string
+                    var jsonContent = JsonSerializer.Serialize(newProduct);
+
+                    //Post Request
+                    HttpResponseMessage response = await client.PostAsync(URL, new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"));
+
+                    if(response.IsSuccessStatusCode)
+                    {
+                        
+                    }
+                    else
+                        System.Console.WriteLine($"Error: {response.StatusCode}");
+
+                    //CREATE request with 2 parametors
+                    // Create a new product
+                    var nextProduct = new
+                    {
+                        name = "T-shirt",
+                        categori = "Spring"
+                    };
+
+                    // Convert the object to JSON string
+                    jsonContent = JsonSerializer.Serialize(nextProduct);
+
+                    //Post Request
+                    response = await client.PostAsync(URL, new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"));
+
+                    if(response.IsSuccessStatusCode)
+                    {
+                        
+                    }
+                    else
+                        System.Console.WriteLine($"Error: {response.StatusCode}");
+
+                    
+                    //GET request
+                    response = await client.GetAsync(URL);
 
                     if (response.IsSuccessStatusCode)
                     {
-                        //Create obj
-                        var jsonContent = JsonSerializer.Serialize(new 
-                        {                
-                            id = 3,                
-                            name = "New Product"
-                        });
-
                         // Parse the JSON response
                         string jsonResponse = await response.Content.ReadAsStringAsync();
                         JsonDocument jsonDoc = JsonDocument.Parse(jsonResponse);
@@ -41,6 +79,8 @@ namespace cs.src
                     {
                         Console.WriteLine($"Error: {response.StatusCode}");
                     }
+
+
                 }
                 catch (HttpRequestException e)
                 {

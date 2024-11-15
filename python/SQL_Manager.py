@@ -4,6 +4,7 @@ import os
 from sqlalchemy.orm.decl_api import DeclarativeMeta
 from classes.Tables import *
 from classes.Factory import *
+from classes.Product import *
 class SQL_Manager(object):
 
     _instance = None
@@ -13,7 +14,7 @@ class SQL_Manager(object):
         return cls._instance
     
     def __init__(self):
-        engine_uri = f"mysql+pymysql://{os.getenv('mysqluser')}:{os.getenv('mysqlpass')}@{os.getenv('mysqlhost')}/Products"
+        engine_uri = f"mysql+pymysql://root:bWsEocb2r706!@127.0.0.1/Products"
         engine = create_engine(engine_uri)
         metadata = create_tables(MetaData())
         metadata.create_all(engine)
