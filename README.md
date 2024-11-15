@@ -1,2 +1,2 @@
 # Storagesystem
-``` .venv\Scriptsactivate```
+``` .venv\Scripts\activate```
