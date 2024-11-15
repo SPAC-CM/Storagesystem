@@ -1,5 +1,5 @@
-from Product import *
-from Category import *
+from classes.Product import *
+from classes.Category import *
 from sqlalchemy.orm.decl_api import DeclarativeMeta
 
 class Factory(object):
