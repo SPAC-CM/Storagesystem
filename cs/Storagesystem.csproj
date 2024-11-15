@@ -8,9 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="9.1.0" />
     <PackageReference Include="System.Net.Http.Json" Version="9.0.0" />
-    <PackageReference Include="WatsonORM" Version="3.0.9" />
   </ItemGroup>
 
 </Project>
