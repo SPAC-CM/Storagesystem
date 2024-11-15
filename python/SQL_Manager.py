@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 import os
 from sqlalchemy.orm.decl_api import DeclarativeMeta
+from classes.Product import *
 class SQL_Manager(object):
 
     _instance = None
@@ -11,7 +12,7 @@ class SQL_Manager(object):
         return cls._instance
     
     def __init__(self):
-        engine_uri = f"mysql+pymysql://{os.getenv('mysqluser')}:{os.getenv('mysqlpass')}@{os.getenv('mysqlhost')}/Products"
+        engine_uri = f"mysql+pymysql://root:bWsEocb2r706!@127.0.0.1/Products"
         Session = sessionmaker(bind = create_engine(engine_uri))
         self.session = Session()
 
@@ -24,6 +25,9 @@ class SQL_Manager(object):
 
 
 if __name__ == '__main__':
-    catagory = Category(name="Stuff")
     manager = SQL_Manager()
-    manager.add_item(catagory)
+    product = Product()
+    product.name="test"
+    product.price=0
+    product.StockQuantity = 0
+    manager.add_item(product)
