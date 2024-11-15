@@ -41,6 +41,27 @@ namespace cs.src
                     else
                         System.Console.WriteLine($"Error: {response.StatusCode}");
 
+                    //CREATE request with 2 parametors
+                    // Create a new product
+                    var nextProduct = new
+                    {
+                        name = "T-shirt",
+                        categori = "Spring"
+                    };
+
+                    // Convert the object to JSON string
+                    jsonContent = JsonSerializer.Serialize(nextProduct);
+
+                    //Post Request
+                    response = await client.PostAsync(URL, new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"));
+
+                    if(response.IsSuccessStatusCode)
+                    {
+                        
+                    }
+                    else
+                        System.Console.WriteLine($"Error: {response.StatusCode}");
+
                     
                     //GET request
                     response = await client.GetAsync(URL);
