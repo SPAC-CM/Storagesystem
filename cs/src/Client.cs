@@ -78,6 +78,7 @@ namespace cs.src
                     }
                     else
                     {
+                        System.Console.WriteLine();
                         Console.WriteLine($"Error: {response.StatusCode}");
                     }
 

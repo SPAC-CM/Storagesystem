@@ -13,14 +13,16 @@ def product_is_valid(product):
             return False
     return True
 
-def get_Product(id : int):
-    return next((p for p in products if e['id'] == id), None)
 
 @app.route('/products', methods=['GET'])
 def get_products():
     try:
-        print(SQL_database.get_table(product_table_name))
-        return jsonify(SQL_database.get_table(product_table_name))
+        table = SQL_database.get_table(product_table_name)
+        payload = []
+        for row in table:
+            payload.append(str(row))
+
+        return jsonify(payload)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
