@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 from SQL_Manager import *
 
 app = Flask(__name__)
-SQL_database = SQL_Manager()
+SQL_database = SQL_Manager("root", "bWsEocb2r706!", "127.0.0.1")
 product_table_name = "Products"
 factory = Factory()
 
@@ -24,20 +24,18 @@ def get_products():
         return jsonify({'error': str(e)}), 500
 
 # Get specifick item
-@app.route('/products/item/name', methods=['GET'])
+@app.route('/products_item_name', methods=['GET'])
 def get_product_by_name():
     try:
-        product = json.loads(request.data)
-        return jsonify(SQL_database.get_item(table_name = "product", parametor = "name", item_value = str(product['ProductName'])))
+        return jsonify(str(SQL_database.get_item(table_name = "product", parametor = "name", item_value = str(request.args.get("name")))))
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 # Get specifick item
-@app.route('/products/item/name', methods=['GET'])
+@app.route('/products_item_id', methods=['GET'])
 def get_product_by_id():
     try:
-        product = json.loads(request.data)
-        return jsonify(SQL_database.get_item(table_name = "product", parametor = "id", item_value = str(product['id'])))
+        return jsonify(str(SQL_database.get_item(table_name = "product", parametor = "id", item_value = str(request.args.get("id")))))
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 

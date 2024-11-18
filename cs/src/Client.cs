@@ -21,14 +21,16 @@ namespace cs.src
 
                 try
                 {
-                        
+                    //Read
+                    await ReadProductByName(client, "Test");
 
+                    /*  
                     //CREATE request
                     await CreateProduckt(client, "Top hat", 13.2f, 2);
 
-                    //GET request
+                    //GET hole table
                     await ReadProductDatabase(client);
-
+                    */
 
                 }
                 catch (HttpRequestException e)
@@ -80,6 +82,46 @@ namespace cs.src
             {
                 System.Console.WriteLine();
                 Console.WriteLine($"Error in ReadProductDatabase: {response.StatusCode}");
+            }
+        }
+
+        public async Task ReadProductByID(HttpClient client, int targetID)
+        {
+            try
+            {
+                string targetURL = $"{URL}_item_id?id={targetID}";
+
+                HttpResponseMessage response = await client.GetAsync(targetURL);
+
+                if(response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    System.Console.WriteLine(content);
+                }
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine(e);
+            }
+        }
+
+        public async Task ReadProductByName(HttpClient client, string name)
+        {
+            try
+            {
+                string targetURL = $"{URL}_item_name?name={name}";
+
+                HttpResponseMessage response = await client.GetAsync(targetURL);
+
+                if(response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    System.Console.WriteLine(content);
+                }
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine(e);
             }
         }
 
