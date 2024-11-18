@@ -8,13 +8,13 @@ from classes.Factory import *
 class SQL_Manager(object):
 
     _instance = None
-    def __new__(cls):
+    def __new__(cls, user : str, password : str, host: str):
         if not isinstance(cls._instance,cls):
             cls._instance = object.__new__(cls)
         return cls._instance
     
-    def __init__(self):
-        self.engine_uri = f"mysql+pymysql://{os.getenv('mysqluser')}:{os.getenv('mysqlpass')}@{os.getenv('mysqlhost')}/Products"
+    def __init__(self, user : str, password : str, host: str):
+        self.engine_uri = f"mysql+pymysql://"+user+":"+password+"@"+host+"/Products"
         engine = create_engine(self.engine_uri)
         self.metadata = create_tables(MetaData())
         self.metadata.create_all(engine)
@@ -42,8 +42,12 @@ class SQL_Manager(object):
                     elif table_name.lower() == "categories":
                         return self.session.query(Categories).filter(Categories.c.name == item_value)
                 case "stock":
+                    if not table_name.lower() == "product":
+                        raise Exception("only products can have stock")
                     return self.session.query(Product).filter(Product.StockQuantity == int(item_value))
                 case "price":
+                    if not table_name.lower() == "product":
+                        raise Exception("only products can have price")
                     return self.session.query(Product).filter(Product.price == item_value)
                 case _:
                     raise Exception("parametor not recognized")
@@ -66,6 +70,31 @@ class SQL_Manager(object):
         table = self.session.execute(cmd)
         return table
 
+    def update_item(self, table_name : str, parametor : str, item_value : str, update_parametor : str, update_value : str):
+        item = self.get_item(table_name, parametor, item_value)
+        try:
+            match update_parametor.lower():
+                case "name":
+                    if table_name.lower() == "product":
+                        item.update({Product.name: update_value})
+                    elif table_name.lower() == "categories":
+                        item.update({Category.CategoryName: update_value})
+                    else:
+                        raise Exception("table name not recognized")
+                case "stock":
+                    if not table_name.lower() == "product":
+                        raise Exception("Can only update stock for products")
+                    item.update({Product.StockQuantity: int(update_value)})
+                case "price":
+                    if not table_name.lower() == "product":
+                        raise Exception("Can only update price for products")
+                    item.update({Product.price: float(update_value)})
+                case _:
+                    raise Exception("parametor not recognized")
+            self.session.commit()
+        except Exception as e:
+            print(e)
+
     def remove_item(self, table_name : str, parametor : str, item_value : str):
         Session = sessionmaker(bind = create_engine(self.engine_uri))
         self.session = Session()
@@ -74,9 +103,8 @@ class SQL_Manager(object):
         self.session.commit()
 
 if __name__ == '__main__':
-    manager = SQL_Manager()
-    factory = Factory()
-    manager.remove_item(table_name = "Product", parametor = "id", item_value = "1")
-    table = manager.get_table("Products")
+    manager = SQL_Manager(os.getenv('mysqluser'),os.getenv('mysqlpass'),os.getenv('mysqlhost'))
+    manager.update_item(table_name = "Product", parametor = "id", item_value = "1", update_parametor = "price", update_value = "100")
+    table = manager.get_table("products")
     for row in table:
         print(row)
