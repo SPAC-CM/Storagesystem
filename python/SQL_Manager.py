@@ -8,13 +8,13 @@ from classes.Factory import *
 class SQL_Manager(object):
 
     _instance = None
-    def __new__(cls):
+    def __new__(cls, user : str, password : str, host: str):
         if not isinstance(cls._instance,cls):
             cls._instance = object.__new__(cls)
         return cls._instance
     
-    def __init__(self):
-        self.engine_uri = f"mysql+pymysql://{os.getenv('mysqluser')}:{os.getenv('mysqlpass')}@{os.getenv('mysqlhost')}/Products"
+    def __init__(self, user : str, password : str, host: str):
+        self.engine_uri = f"mysql+pymysql://"+user+":"+password+"@"+host+"/Products"
         engine = create_engine(self.engine_uri)
         self.metadata = create_tables(MetaData())
         self.metadata.create_all(engine)
@@ -76,7 +76,7 @@ class SQL_Manager(object):
             match update_parametor.lower():
                 case "name":
                     if table_name.lower() == "product":
-                        item.update({Product.name: update_value)})
+                        item.update({Product.name: update_value})
                     elif table_name.lower() == "categories":
                         item.update({Category.CategoryName: update_value})
                     else:
@@ -103,7 +103,7 @@ class SQL_Manager(object):
         self.session.commit()
 
 if __name__ == '__main__':
-    manager = SQL_Manager()
+    manager = SQL_Manager(os.getenv('mysqluser'),os.getenv('mysqlpass'),os.getenv('mysqlhost'))
     manager.update_item(table_name = "Product", parametor = "id", item_value = "1", update_parametor = "price", update_value = "100")
     table = manager.get_table("products")
     for row in table:
