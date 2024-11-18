@@ -50,7 +50,7 @@ namespace cs.src
                 HttpResponseMessage response = await client.PostAsync(URL, new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"));
                 if(response.IsSuccessStatusCode)
                 {
-                    System.Console.WriteLine("Made product");
+                    System.Console.WriteLine(response);
                 }
                 else
                     System.Console.WriteLine($"Error: {response.StatusCode}");
