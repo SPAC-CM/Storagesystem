@@ -1,18 +1,11 @@
 import json
 from flask import Flask, jsonify, request
 from SQL_Manager import *
-app = Flask(__name__)
 
+app = Flask(__name__)
 SQL_database = SQL_Manager()
 product_table_name = "Products"
-
-
-def product_is_valid(product):
-    for key in product.keys():
-        if(key != 'name'):
-            return False
-    return True
-
+factory = Factory()
 
 @app.route('/products', methods=['GET'])
 def get_products():
@@ -28,13 +21,13 @@ def get_products():
 
 @app.route('/products', methods=['POST'])
 def create_product():
+    # Get data
     product = json.loads(request.data)
-    if not product_is_valid(product):
-        return jsonify({'error' : ' Invalid product propertoes'}), 400
 
-    curretID = len(products) + 1 #Placeholder for making id
-    product['id'] = curretID
-    products.append(product)
+
+    convertet_product = factory.create_class("Product", name = product['ProductName'], price = product['Price'], stock = product['StockQuantity'])
+
+    SQL_database.add_item(convertet_product)
 
     return '', 201, { 'location' : f'/products/'}
 

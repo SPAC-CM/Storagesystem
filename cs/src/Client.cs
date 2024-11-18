@@ -21,12 +21,13 @@ namespace cs.src
 
                 try
                 {
-                    /*
                     //CREATE request
                     // Create a new product
                     var newProduct = new
                     {
-                        name = "Top hat"
+                        ProductName = "Create hat",
+                        Price = 20,
+                        StockQuantity = 1
                     };
 
                     // Convert the object to JSON string
@@ -37,11 +38,12 @@ namespace cs.src
 
                     if(response.IsSuccessStatusCode)
                     {
-                        
+                        System.Console.WriteLine("Made product");
                     }
                     else
                         System.Console.WriteLine($"Error: {response.StatusCode}");
 
+                    /*
                     //CREATE request with 2 parametors
                     // Create a new product
                     var nextProduct = new
@@ -65,7 +67,7 @@ namespace cs.src
                     */
                     
                     //GET request
-                    HttpResponseMessage response = await client.GetAsync(URL);
+                    response = await client.GetAsync(URL);
 
                     if (response.IsSuccessStatusCode)
                     {
