@@ -21,6 +21,7 @@ namespace cs.src
 
                 try
                 {
+                    /*
                     //CREATE request
                     // Create a new product
                     var newProduct = new
@@ -61,10 +62,10 @@ namespace cs.src
                     }
                     else
                         System.Console.WriteLine($"Error: {response.StatusCode}");
-
+                    */
                     
                     //GET request
-                    response = await client.GetAsync(URL);
+                    HttpResponseMessage response = await client.GetAsync(URL);
 
                     if (response.IsSuccessStatusCode)
                     {
