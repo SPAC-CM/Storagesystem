@@ -21,6 +21,8 @@ namespace cs.src
 
                 try
                 {
+                        
+
                     //CREATE request
                     await CreateProduckt(client, "Top hat", 13.2f, 2);
 
@@ -80,7 +82,7 @@ namespace cs.src
                 Console.WriteLine($"Error in ReadProductDatabase: {response.StatusCode}");
             }
         }
-        
+
         public async Task UpdateProductDatabase(HttpClient client, int targetID)
         {
             try

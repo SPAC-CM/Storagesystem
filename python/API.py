@@ -10,7 +10,7 @@ factory = Factory()
 @app.route('/products', methods=['GET'])
 def get_products():
     try:
-        # Get tabæe
+        # Get table
         table = SQL_database.get_table(product_table_name)
 
         # Collect data
@@ -20,6 +20,24 @@ def get_products():
 
         # Return
         return jsonify(payload)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Get specifick item
+@app.route('/products/item/name', methods=['GET'])
+def get_product_by_name():
+    try:
+        product = json.loads(request.data)
+        return jsonify(SQL_database.get_item(table_name = "product", parametor = "name", item_value = str(product['ProductName'])))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+# Get specifick item
+@app.route('/products/item/name', methods=['GET'])
+def get_product_by_id():
+    try:
+        product = json.loads(request.data)
+        return jsonify(SQL_database.get_item(table_name = "product", parametor = "id", item_value = str(product['id'])))
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -43,8 +61,8 @@ def create_product():
         return '', 200, { 'Report_message' : f'Item_already_exits'}
 
 
-@app.route('/products/<int:ud>', methods=['PUT'])    
-def update_product(id : int):
+@app.route('/products/update', methods=['PUT'])    
+def update_product():
     # Check for id
     product = SQL_database.get_item(product_table_name, "id", id)    
     if not product:
@@ -59,8 +77,8 @@ def update_product(id : int):
     product.update(update_product)
     return jsonify(product)
 
-@app.route('/products/<int:ud>', methods=['DELETE'])
-def delete_product(id):
+@app.route('/products/delete', methods=['DELETE'])
+def delete_product():
     global products
     product = get_Product(id)
     if product is None:
