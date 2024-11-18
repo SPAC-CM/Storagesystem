@@ -26,7 +26,7 @@ class SQL_Manager(object):
         self.session.add(item)
         self.session.commit()
 
-    def get_item(self,table_name : str, parametor : str, item_value : str):
+    def get_query(self,table_name : str, parametor : str, item_value : str):
         try:
             if not table_name and not item_value and not parametor:
                 raise Exception("Delete must have a table name, a parametor and a value")
@@ -54,6 +54,10 @@ class SQL_Manager(object):
             self.session.commit()
         except Exception as e:
             print(e)
+    
+    def get_item(self,table_name : str, parametor : str, item_value : str):
+        item = self.get_query()
+        return item.all()
 
     def get_table(self, table_name: str):
         self.session.close()
@@ -71,7 +75,7 @@ class SQL_Manager(object):
         return table
 
     def update_item(self, table_name : str, parametor : str, item_value : str, update_parametor : str, update_value : str):
-        item = self.get_item(table_name, parametor, item_value)
+        item = self.get_query(table_name, parametor, item_value)
         try:
             match update_parametor.lower():
                 case "name":
@@ -98,7 +102,7 @@ class SQL_Manager(object):
     def remove_item(self, table_name : str, parametor : str, item_value : str):
         Session = sessionmaker(bind = create_engine(self.engine_uri))
         self.session = Session()
-        entry = self.get_item(table_name, parametor, item_value)
+        entry = self.get_query(table_name, parametor, item_value)
         entry.delete()
         self.session.commit()
 
