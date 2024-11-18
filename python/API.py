@@ -45,16 +45,18 @@ def create_product():
 
 @app.route('/products/<int:ud>', methods=['PUT'])    
 def update_product(id : int):
-    product = SQL_Manager.get_item(product_table_name, "id", id)
-    if product is None:
+    # Check for id
+    product = SQL_database.get_item(product_table_name, "id", id)    
+    if not product:
         return jsonify({'error' : 'Product does not exits'}), 404
     
+    # Get update data
     update_product = json.loads(request.data)
     if not product_is_valid(update_product):
         return jsonify({'error' : 'Invalid product properties'}), 404
     
+    # Update
     product.update(update_product)
-
     return jsonify(product)
 
 @app.route('/products/<int:ud>', methods=['DELETE'])

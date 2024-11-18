@@ -81,5 +81,16 @@ namespace cs.src
             }
         }
         
+        public async Task UpdateProductDatabase(HttpClient client, int targetID)
+        {
+            try
+            {
+                
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine(e);
+            }
+        }
     }
 }
