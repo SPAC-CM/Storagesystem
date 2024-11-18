@@ -21,65 +21,11 @@ namespace cs.src
 
                 try
                 {
-                    /*
                     //CREATE request
-                    // Create a new product
-                    var newProduct = new
-                    {
-                        name = "Top hat"
-                    };
+                    await CreateProduckt(client, "Top hat", 13.2f, 2);
 
-                    // Convert the object to JSON string
-                    var jsonContent = JsonSerializer.Serialize(newProduct);
-
-                    //Post Request
-                    HttpResponseMessage response = await client.PostAsync(URL, new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"));
-
-                    if(response.IsSuccessStatusCode)
-                    {
-                        
-                    }
-                    else
-                        System.Console.WriteLine($"Error: {response.StatusCode}");
-
-                    //CREATE request with 2 parametors
-                    // Create a new product
-                    var nextProduct = new
-                    {
-                        name = "T-shirt",
-                        categori = "Spring"
-                    };
-
-                    // Convert the object to JSON string
-                    jsonContent = JsonSerializer.Serialize(nextProduct);
-
-                    //Post Request
-                    response = await client.PostAsync(URL, new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"));
-
-                    if(response.IsSuccessStatusCode)
-                    {
-                        
-                    }
-                    else
-                        System.Console.WriteLine($"Error: {response.StatusCode}");
-                    */
-                    
                     //GET request
-                    HttpResponseMessage response = await client.GetAsync(URL);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Parse the JSON response
-                        string jsonResponse = await response.Content.ReadAsStringAsync();
-                        JsonDocument jsonDoc = JsonDocument.Parse(jsonResponse);
-
-                        // Process the JSON data
-                        Console.WriteLine($"API Response: {jsonDoc.RootElement}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Error: {response.StatusCode}");
-                    }
+                    await ReadProductDatabase(client);
 
 
                 }
@@ -89,5 +35,51 @@ namespace cs.src
                 }
             }
         }
+        public async Task CreateProduckt(HttpClient client, string ProductName, float Price, int StockQuantity)
+        {
+            try
+            {
+                var dataPackage = new
+                {
+                    ProductName, Price, StockQuantity
+                };
+
+                // Convert the object to JSON string
+                var jsonContent = JsonSerializer.Serialize(dataPackage);
+                //Post Request
+                HttpResponseMessage response = await client.PostAsync(URL, new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"));
+                if(response.IsSuccessStatusCode)
+                {
+                    System.Console.WriteLine("Made product");
+                }
+                else
+                    System.Console.WriteLine($"Error: {response.StatusCode}");
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine(e);
+                throw;
+            }
+        }
+
+        public async Task ReadProductDatabase(HttpClient client)
+        {
+            HttpResponseMessage response = await client.GetAsync(URL);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Parse the JSON response
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                JsonDocument jsonDoc = JsonDocument.Parse(jsonResponse);
+                // Process the JSON data
+                Console.WriteLine($"API Response: {jsonDoc.RootElement}");
+            }
+            else
+            {
+                System.Console.WriteLine();
+                Console.WriteLine($"Error in ReadProductDatabase: {response.StatusCode}");
+            }
+        }
+        
     }
 }
