@@ -56,7 +56,7 @@ class SQL_Manager(object):
             print(e)
     
     def get_item(self,table_name : str, parametor : str, item_value : str):
-        item = self.get_query()
+        item = self.get_query(table_name,parametor,item_value)
         return item.all()
 
     def get_table(self, table_name: str):
@@ -109,6 +109,4 @@ class SQL_Manager(object):
 if __name__ == '__main__':
     manager = SQL_Manager(os.getenv('mysqluser'),os.getenv('mysqlpass'),os.getenv('mysqlhost'))
     manager.update_item(table_name = "Product", parametor = "id", item_value = "1", update_parametor = "price", update_value = "100")
-    table = manager.get_table("products")
-    for row in table:
-        print(row)
+    print(str(manager.get_item(table_name="Product", parametor = "id", item_value="1")))
