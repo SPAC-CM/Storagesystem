@@ -26,7 +26,17 @@ class SQL_Manager(object):
         self.session.add(item)
         self.session.commit()
 
-    def get_item(self,table_name : str, parametor : str, item_value : str):
+    def multi_query(self, **kwargs):
+        queries = []
+        for key in kwargs.keys():
+            table, parametor ,item_value = kwargs[key]
+            queries.append(self.get_query(table, parametor, item_value))
+        item = queries[0]
+        for i in range(1,len(queries)):
+            item = item.intersect(queries[i])
+        return item.all()
+
+    def get_query(self,table_name : str, parametor : str, item_value : str):
         try:
             if not table_name and not item_value and not parametor:
                 raise Exception("Delete must have a table name, a parametor and a value")
@@ -54,6 +64,10 @@ class SQL_Manager(object):
             self.session.commit()
         except Exception as e:
             print(e)
+    
+    def get_item(self,table_name : str, parametor : str, item_value : str):
+        item = self.get_query(table_name,parametor,item_value)
+        return item.all()
 
     def get_table(self, table_name: str):
         self.session.close()
@@ -71,7 +85,7 @@ class SQL_Manager(object):
         return table
 
     def update_item(self, table_name : str, parametor : str, item_value : str, update_parametor : str, update_value : str):
-        item = self.get_item(table_name, parametor, item_value)
+        item = self.get_query(table_name, parametor, item_value)
         try:
             match update_parametor.lower():
                 case "name":
@@ -98,13 +112,10 @@ class SQL_Manager(object):
     def remove_item(self, table_name : str, parametor : str, item_value : str):
         Session = sessionmaker(bind = create_engine(self.engine_uri))
         self.session = Session()
-        entry = self.get_item(table_name, parametor, item_value)
+        entry = self.get_query(table_name, parametor, item_value)
         entry.delete()
         self.session.commit()
 
 if __name__ == '__main__':
     manager = SQL_Manager(os.getenv('mysqluser'),os.getenv('mysqlpass'),os.getenv('mysqlhost'))
-    manager.update_item(table_name = "Product", parametor = "id", item_value = "1", update_parametor = "price", update_value = "100")
-    table = manager.get_table("products")
-    for row in table:
-        print(row)
+    print(str(manager.multi_query(first = ("product","price","10"), second = ("product", "stock", "5"))))
