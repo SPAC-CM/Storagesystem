@@ -91,6 +91,32 @@ def update_product():
         print(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 400
 
+@app.route('/products_update', methods=['PATCH'])    
+def update_product_element():
+    try:
+        product_id = request.form.get('id', type=int)
+        fields = request.form.get('fields')
+
+        # Read JSON data
+        json_data = request.get_json(silent=True)
+
+        if json:
+            # Get date
+            product_id = json_data.get('id')
+            fields = json_data.get('fields')
+            
+            # Run though fields dictionary
+            for element, value in fields.items():
+                SQL_database.update_item(table_name = "Product", parametor = "id", 
+                    item_value = str(product_id), update_parametor = element, update_value = str(value))
+        
+        return jsonify({"message": "Product updated successfully"}), 200
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({"error": str(e)}), 400
+
+
 @app.route('/products_delete_id', methods=['DELETE'])
 def delete_product():
     targetID = request.args.get("id")

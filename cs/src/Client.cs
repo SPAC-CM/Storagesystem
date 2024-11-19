@@ -21,6 +21,13 @@ namespace cs.src
 
                 try
                 {
+                    await UpdateProductInDatabase(client, 4, new Dictionary<string, object>
+                    {
+                        { "price", 99.99f },
+                        { "stock", 100 }
+                    });
+
+
                     /*
                     //Delete
                     await DeleteProductFromDatabase(client, 5);
@@ -130,12 +137,54 @@ namespace cs.src
             }
         }
 
-        public async Task UpdateProductDatabase(HttpClient client, int targetID, 
-            string updatedName = "", float updatedPrice = 0, int updateStock = 0)
+
+        public async Task UpdateProductInDatabase(HttpClient client, int targetID, Dictionary<string, object> updatedFields)
+        {
+            try
+            {       
+                // Prepare the request body as JSON
+                var content = new
+                {
+                    id = targetID,
+                    fields = updatedFields
+                };
+
+                // Convert the content to JSON string
+                string jsonContent = JsonSerializer.Serialize(content);
+
+                // Create a StringContent object with the JSON content
+                using (StringContent requestBody = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"))
+                {
+                    // Prepare the PATCH request
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Patch, $"{URL}_update");
+
+                    // Add the request body
+                    request.Content = requestBody;
+
+                    HttpResponseMessage response = await client.SendAsync(request);
+
+                    if(response.IsSuccessStatusCode)
+                    {
+                        System.Console.WriteLine($"Updated item successfully");
+                    }
+                    else
+                    {
+                        System.Console.WriteLine($"Error updating item: {response.StatusCode}");
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                System.Console.WriteLine($"Error: {e.Message}");
+            }
+        }
+
+        public async Task OverrideProductInDatabase(HttpClient client, int targetID, 
+            string updatedName, float updatedPrice, int updateStock)
         {
             try
             {
-            // Prepare the request body as JSON
+                // Prepare the request body as JSON
                 var content = new
                 {
                     id = targetID,
@@ -173,6 +222,9 @@ namespace cs.src
                 System.Console.WriteLine(e);
             }
         }
+
+
+
 
         public async Task DeleteProductFromDatabase(HttpClient client, int targetID)
         {
