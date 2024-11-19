@@ -2,8 +2,10 @@ from classes.Product import *
 from classes.Category import *
 from sqlalchemy.orm.decl_api import DeclarativeMeta
 
+#Class to easily make a new item for the database
 class Factory(object):
-    
+   
+    #Function must be called with a class_name and all the values each class needs
     def create_class(self, class_name : str, **kwargs) -> DeclarativeMeta :
         try:
             match class_name.lower():
