@@ -5,8 +5,6 @@ import os
 from sqlalchemy.orm.decl_api import DeclarativeMeta
 from classes.Tables import *
 from classes.Factory import *
-from classes.Category import *
-from classes.Product import *
 class SQL_Manager(object):
 
     _instance = None
@@ -14,7 +12,7 @@ class SQL_Manager(object):
         if not isinstance(cls._instance,cls):
             cls._instance = object.__new__(cls)
         return cls._instance
-    
+
     def __init__(self, user : str, password : str, host: str):
         self.engine_uri = f"mysql+pymysql://"+user+":"+password+"@"+host+"/Products"
         engine = create_engine(self.engine_uri)
@@ -60,7 +58,11 @@ class SQL_Manager(object):
                 case "price":
                     if not table_name.lower() == "product":
                         raise Exception("only products can have price")
-                    return self.session.query(Product).filter(Product.price == item_value)
+                    return self.session.query(Product).filter(Product.price == float(item_value))
+                case "category":
+                    if not table_name.lower() == "product":
+                        raise Exception("only products have a category")
+                    return self.session.query(Product).filter(Product.category_id==int(item_value))
                 case _:
                     raise Exception("parametor not recognized")
             self.session.commit()
@@ -105,6 +107,10 @@ class SQL_Manager(object):
                     if not table_name.lower() == "product":
                         raise Exception("Can only update price for products")
                     item.update({Product.price: float(update_value)})
+                case "category":
+                    if not table_name.lower() == "product":
+                        raise Exception("Can only update category for products")
+                    item.update({Product.category_id: int(update_value)})
                 case _:
                     raise Exception("parametor not recognized")
             self.session.commit()
@@ -120,4 +126,6 @@ class SQL_Manager(object):
 
 if __name__ == '__main__':
     manager = SQL_Manager(os.getenv('mysqluser'),os.getenv('mysqlpass'),os.getenv('mysqlhost'))
-    print(manager.get_item(table_name = "product", parametor = "name", item_value="Milk"))
+    factory = Factory()
+    product = factory.create_class("product", name="Test", price=10,stock = 10, category=1)
+    manager.add_item(product)
