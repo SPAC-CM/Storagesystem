@@ -24,6 +24,7 @@ namespace cs.src
                     //Read
                     await ReadProductByName(client, "Test");
 
+                    await UpdateProductDatabase(client, 2, "Truck", 5.2f, 4);
                     /*  
                     //CREATE request
                     await CreateProduckt(client, "Top hat", 13.2f, 2);
@@ -93,7 +94,7 @@ namespace cs.src
 
                 HttpResponseMessage response = await client.GetAsync(targetURL);
 
-                if(response.IsSuccessStatusCode)
+                if(response.IsSuccessStatusCode) 
                 {
                     string content = await response.Content.ReadAsStringAsync();
                     System.Console.WriteLine(content);
@@ -125,11 +126,42 @@ namespace cs.src
             }
         }
 
-        public async Task UpdateProductDatabase(HttpClient client, int targetID)
+        public async Task UpdateProductDatabase(HttpClient client, int targetID, 
+            string updatedName = "", float updatedPrice = 0, int updateStock = 0)
         {
             try
             {
-                
+            // Prepare the request body as JSON
+                var content = new
+                {
+                    name = updatedName,
+                    price = updatedPrice,
+                    stock = updateStock
+                };
+
+                // Convert the content to JSON string
+                string jsonContent = JsonSerializer.Serialize(content);
+
+                // Create a StringContent object with the JSON content
+                using (StringContent requestBody = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"))
+                {
+                    // Prepare the PUT request
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"{URL}_update_id?id={targetID}");
+
+                    // Add the request body
+                    request.Content = requestBody;
+
+                    HttpResponseMessage response = await client.SendAsync(request);
+
+                    if(response.IsSuccessStatusCode)
+                    {
+                        System.Console.WriteLine("Updated item");
+                    }
+                    else
+                    {
+                        System.Console.WriteLine($"Error: {response.StatusCode}");
+                    }
+                }
             }
             catch (System.Exception e)
             {

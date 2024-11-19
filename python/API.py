@@ -59,21 +59,38 @@ def create_product():
         return '', 200, { 'Report_message' : f'Item_already_exits'}
 
 
-@app.route('/products/update', methods=['PUT'])    
+@app.route('/products_update_id', methods=['PUT'])    
 def update_product():
-    # Check for id
-    product = SQL_database.get_item(product_table_name, "id", id)    
-    if not product:
-        return jsonify({'error' : 'Product does not exits'}), 404
-    
-    # Get update data
-    update_product = json.loads(request.data)
-    if not product_is_valid(update_product):
-        return jsonify({'error' : 'Invalid product properties'}), 404
-    
-    # Update
-    product.update(update_product)
-    return jsonify(product)
+    try:
+        # Read query parameters
+        product_id = request.args.get('id', type=int)
+        
+        # Read form data
+        name = request.form.get('name')
+        price = request.form.get('price', type=float)
+        stock = request.form.get('stock', type=int)
+
+        # Read JSON data
+        json_data = request.get_json(silent=True)
+        if json_data:
+            name = json_data.get('name')
+            price = json_data.get('price')
+            stock = json_data.get('stock')
+
+        # Process the data
+        SQL_database.update_item(table_name = "Product", parametor = "id", 
+            item_value = str(product_id), update_parametor = "name", update_value = str(name))
+        SQL_database.update_item(table_name = "Product", parametor = "id", 
+            item_value = str(product_id), update_parametor = "price", update_value = str(price))
+        SQL_database.update_item(table_name = "Product", parametor = "id", 
+            item_value = str(product_id), update_parametor = "stock", update_value = str(stock))
+
+        # Return a response
+        return jsonify({"message": "Product updated successfully"}), 200
+
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({"error": str(e)}), 400
 
 @app.route('/products/delete', methods=['DELETE'])
 def delete_product():
