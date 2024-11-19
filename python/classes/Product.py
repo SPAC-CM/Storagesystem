@@ -1,25 +1,21 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy.orm import declarative_base
-import os
-
-base = declarative_base()
+from sqlalchemy.orm import relationship
+from classes import Base
 
 # Definer produkter under kategorien "Elektronik"
-class Product(base):
+class Product(Base):
     __tablename__ = 'Products'
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable = False)
     price = Column(Float, nullable=False)
     StockQuantity = Column(Integer, nullable=False)
-    # CatagoryID = Column(Integer, ForeignKey('Catagories.CatagoryID'))
+    category_id = Column(Integer, ForeignKey('Categories.CategoryID'))
 
     # # Relationship til kategori
-    # catagory = relationship("Catagory", back_populates="products")
+    category = relationship("Category", foreign_keys=[category_id])
 
     def __repr__(self):
         return (f"<Product(ProductID={self.id}, ProductName='{self.name}', "
-                f"Price={self.price}, StockQuantity={self.StockQuantity}, ")
-                # f"Catagory='{self.catagory.CatagoryName if self.catagory else None}')>")
+                f"Price={self.price}, StockQuantity={self.StockQuantity}, "
+                f"Catagory='{self.category_id}')>")
