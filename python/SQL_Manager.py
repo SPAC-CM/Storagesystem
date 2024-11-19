@@ -32,7 +32,7 @@ class SQL_Manager(object):
         self.session.commit()
 
     #Takes multiple search parametors to do a search for all of them. The parametors are like in the get query function but must be given as a tuple
-    #Example multi_query(first_query=("product", "name", "example"), secind_query=("product", "category", "1"), ...)
+    #Example multi_query(first_query=("product", "name", "example"), second_query=("product", "category", "1"), ...)
     def multi_query(self, **kwargs):
 
         #Collects all the queries
