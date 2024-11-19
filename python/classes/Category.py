@@ -1,14 +1,10 @@
 from sqlalchemy import Column, Integer, String
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-import os
+from classes import Base
 
-base = declarative_base()
 
 # Definer kategorien "Elektronik" og "Refurbished Elektronik"
-class Category(base):
+class Category(Base):
     __tablename__ = 'Categories'
 
     CategoryID = Column(Integer, primary_key=True)
