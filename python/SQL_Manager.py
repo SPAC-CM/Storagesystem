@@ -5,6 +5,8 @@ import os
 from sqlalchemy.orm.decl_api import DeclarativeMeta
 from classes.Tables import *
 from classes.Factory import *
+from classes.Category import *
+from classes.Product import *
 class SQL_Manager(object):
 
     _instance = None
@@ -118,4 +120,4 @@ class SQL_Manager(object):
 
 if __name__ == '__main__':
     manager = SQL_Manager(os.getenv('mysqluser'),os.getenv('mysqlpass'),os.getenv('mysqlhost'))
-    print(str(manager.multi_query(first = ("product","price","10"), second = ("product", "stock", "5"))))
+    print(manager.get_item(table_name = "product", parametor = "name", item_value="Milk"))
