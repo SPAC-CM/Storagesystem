@@ -21,11 +21,15 @@ namespace cs.src
 
                 try
                 {
+                    /*
+                    //Delete
+                    await DeleteProductFromDatabase(client, 5);
+                    */
+                    /*
                     //Read
                     await ReadProductByName(client, "Test");
 
                     await UpdateProductDatabase(client, 1, "car", 634.34234f, 4);
-                    /*  
                     //CREATE request
                     await CreateProduckt(client, "Top hat", 13.2f, 2);
 
@@ -167,6 +171,28 @@ namespace cs.src
             catch (System.Exception e)
             {
                 System.Console.WriteLine(e);
+            }
+        }
+
+        public async Task DeleteProductFromDatabase(HttpClient client, int targetID)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.DeleteAsync($"{URL}_delete_id?id={targetID}");
+
+                if(response.IsSuccessStatusCode)
+                {
+                    System.Console.WriteLine($"Deleted item at {targetID}");
+                }
+                else
+                {
+                    System.Console.WriteLine(response.RequestMessage);
+                }
+            }
+            catch (System.Exception)
+            {
+                
+                throw;
             }
         }
     }

@@ -91,14 +91,11 @@ def update_product():
         print(f"Error: {str(e)}")
         return jsonify({"error": str(e)}), 400
 
-@app.route('/products/delete', methods=['DELETE'])
+@app.route('/products_delete_id', methods=['DELETE'])
 def delete_product():
-    global products
-    product = get_Product(id)
-    if product is None:
-        return jsonify({'error', 'Product does not exits'}), 404
+    targetID = request.args.get("id")
+    SQL_database.remove_item(table_name = "Product", parametor = "id", item_value = str(targetID))
 
-    products = [p for p in products if e['id'] != id]
     return jsonify(product), 200    
 
 
