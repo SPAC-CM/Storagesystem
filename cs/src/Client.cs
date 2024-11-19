@@ -24,7 +24,7 @@ namespace cs.src
                     //Read
                     await ReadProductByName(client, "Test");
 
-                    await UpdateProductDatabase(client, 2, "Truck", 5.2f, 4);
+                    await UpdateProductDatabase(client, 1, "car", 634.34234f, 4);
                     /*  
                     //CREATE request
                     await CreateProduckt(client, "Top hat", 13.2f, 2);
@@ -134,6 +134,7 @@ namespace cs.src
             // Prepare the request body as JSON
                 var content = new
                 {
+                    id = targetID,
                     name = updatedName,
                     price = updatedPrice,
                     stock = updateStock
@@ -146,7 +147,7 @@ namespace cs.src
                 using (StringContent requestBody = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json"))
                 {
                     // Prepare the PUT request
-                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"{URL}_update_id?id={targetID}");
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Put, $"{URL}_update_all");
 
                     // Add the request body
                     request.Content = requestBody;

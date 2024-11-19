@@ -59,13 +59,11 @@ def create_product():
         return '', 200, { 'Report_message' : f'Item_already_exits'}
 
 
-@app.route('/products_update_id', methods=['PUT'])    
+@app.route('/products_update_all', methods=['PUT'])    
 def update_product():
     try:
-        # Read query parameters
-        product_id = request.args.get('id', type=int)
-        
         # Read form data
+        product_id = request.form.get('id', type=int)
         name = request.form.get('name')
         price = request.form.get('price', type=float)
         stock = request.form.get('stock', type=int)
@@ -73,6 +71,7 @@ def update_product():
         # Read JSON data
         json_data = request.get_json(silent=True)
         if json_data:
+            product_id = json_data.get('id')
             name = json_data.get('name')
             price = json_data.get('price')
             stock = json_data.get('stock')
