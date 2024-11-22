@@ -52,9 +52,6 @@ class SQL_Manager(object):
     #Gets a single query.
     def get_query(self,table_name : str, parametor : str, item_value : str):
         try:
-            if not table_name and not item_value and not parametor:
-                raise Exception("Delete must have a table name, a parametor and a value")
-
             #Switch to find which coloumn to look in and matches items with the item value
             match parametor.lower():
                 case "id":
@@ -81,13 +78,13 @@ class SQL_Manager(object):
                     return self.session.query(Product).filter(Product.category_id==int(item_value))
                 case _:
                     raise Exception("parametor not recognized")
-            self.session.commit()
         except Exception as e:
             print(e)
     
     #Gets all items where the parametor fulfills the item_value
     def get_item(self,table_name : str, parametor : str, item_value : str):
         item = self.get_query(table_name,parametor,item_value)
+        print(item)
         return item.all()
 
     #Gets a single table
@@ -143,12 +140,5 @@ class SQL_Manager(object):
 if __name__ == '__main__':
     manager = SQL_Manager(os.getenv('mysqluser'),os.getenv('mysqlpass'),os.getenv('mysqlhost'))
     factory = Factory()
-    product = factory.create_class("product", name="Test", price=10,stock = 10, category=1)
+    product = factory.create_class("product", name="Test", price=10,stock = 10, category=2)
     manager.add_item(product)
-    table = manager.get_table("products")
-    for row in table:
-        print(row)
-    manager.remove_item("product", "name", "Test")
-    table = manager.get_table("products")
-    for row in table:
-        print(row)
